@@ -306,25 +306,24 @@
             const response = await fetch("/predict/", {method: "POST", body: formData});
             const json = await response.json();
             
-            displayResult(json.prediction, "test");
+            displayResult(json.prediction);
         });
 
         // Afficher le résultat
-        function displayResult(sentiment, movieTitle) {
+        function displayResult(sentiment) {
             result.classList.remove('positive', 'negative');
 
-            const movieText = movieTitle ? ` pour "${movieTitle}"` : '';
 
             if (sentiment === 'Positif') {
                 result.classList.add('positive');
                 resultIcon.textContent = '😊';
                 resultTitle.textContent = 'Critique Positive !';
-                resultText.textContent = `Votre critique${movieText} est positive. Vous avez apprécié ce film !`;
+                resultText.textContent = `Votre critique est positive. Vous avez apprécié ce film !`;
             } else {
                 result.classList.add('negative');
                 resultIcon.textContent = '😞';
                 resultTitle.textContent = 'Critique Négative';
-                resultText.textContent = `Votre critique${movieText} est négative. Ce film ne vous a pas convaincu.`;
+                resultText.textContent = `Votre critique est négative. Ce film ne vous a pas convaincu.`;
             }
 
             showResult();
