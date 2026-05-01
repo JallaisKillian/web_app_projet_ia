@@ -266,7 +266,7 @@
                 <label for="modelSelect">Modèl :</label>
                 <select name="model" id="modelSelect" required>
                     <option value="mlp">MLP</option>
-                    <option value="svm">SVM</option>
+                    <option value="rl">Regression Logistique</option>
                 </select>
             </div>
 
@@ -282,6 +282,8 @@
             <div class="result-icon" id="resultIcon"></div>
             <div class="result-title" id="resultTitle"></div>
             <div class="result-text" id="resultText"></div>
+            <div class="result-text" id="confianceText"></div>
+            <div class="result-text" id="motImportantText"></div>
         </div>
 
         <div class="error" id="error">
@@ -304,17 +306,17 @@
             hideResult();
             
             const response = await fetch("/predict/", {method: "POST", body: formData});
-            const json = await response.json();
+            const prediction = await response.json();
             
-            displayResult(json.prediction);
+            displayResult(prediction);
+            reviewForm.reset();
         });
 
         // Afficher le résultat
-        function displayResult(sentiment) {
+        function displayResult(prediction) {
             result.classList.remove('positive', 'negative');
 
-
-            if (sentiment === 'Positif') {
+            if (prediction.prediction === 'Positif') {
                 result.classList.add('positive');
                 resultIcon.textContent = '😊';
                 resultTitle.textContent = 'Critique Positive !';
@@ -325,6 +327,11 @@
                 resultTitle.textContent = 'Critique Négative';
                 resultText.textContent = `Votre critique est négative. Ce film ne vous a pas convaincu.`;
             }
+
+            confianceText.textContent = `Confiance : ${prediction.confiance}`;
+            motImportantText.textContent = prediction.mots_importants.map(mot => mot[0]).join(", ");
+
+            console.log(prediction);
 
             showResult();
         }

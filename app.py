@@ -1,26 +1,20 @@
 from flask import Flask, request, render_template
-from mlp_predict import get_mlp_predict
-from svm_predict import get_svm_predict
+from predict import train_mlp, train_logistic_regression, get_mlp_predict, get_logistic_regression_predict
+
+train_mlp()
+train_logistic_regression()
 
 app = Flask(__name__)
-app.config["TEMPLATES_AUTO_RELOAD"] = True
-
-PREDICTIONS = {
-    True: "Positif",
-    False: "Négatif"
-}
 
 @app.route("/predict/", methods=["POST"])
-def mlp_predict():
+def predict():
     avis = request.form["avis"]
     model = request.form["model"]
     
     if model == "mlp":
-        prediction = get_mlp_predict(avis)
+        return get_mlp_predict(avis)
     else:
-        prediction = get_svm_predict(avis)
-        
-    return {"prediction": PREDICTIONS[prediction]}
+        return get_logistic_regression_predict(avis)
 
 @app.route("/")
 def hello_world():
