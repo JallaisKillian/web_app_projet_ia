@@ -19,7 +19,7 @@ def mlp_predict():
         prediction = get_mlp_predict(avis)
     else:
         prediction = get_svm_predict(avis)
-    
+        
     return {"prediction": PREDICTIONS[prediction]}
 
 @app.route("/")
