@@ -329,9 +329,7 @@
             }
 
             confianceText.textContent = `Confiance : ${prediction.confiance}`;
-            motImportantText.textContent = prediction.mots_importants.map(mot => mot[0]).join(", ");
-
-            console.log(prediction);
+            motImportantText.textContent = `Mots importants : ${prediction.mots_importants.map(mot => mot[0]).join(", ")}`;
 
             showResult();
         }
